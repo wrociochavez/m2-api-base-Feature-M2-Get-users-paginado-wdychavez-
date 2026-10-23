@@ -80,7 +80,8 @@ mutaciones a mano (una por vez), corre la suite y restaura el archivo.
 
 - [BITACORA.md](BITACORA.md) — prompts, decisiones, bug inducido con hipótesis y refactor.
 - [CHANGELOG.md](CHANGELOG.md) — cambios por versión.
-- [docs/REFLEXION.md](docs/REFLEXION.md) — reflexión final y evidencia.
+- [docs/EVIDENCIA.md](docs/EVIDENCIA.md) — documento de evidencia (secciones 1 a 5 del formato de entrega).
+- [docs/REFLEXION.md](docs/REFLEXION.md) — reflexión final.
 - [docs/evidencia/](docs/evidencia/) — logs de cobertura, bug y mutación.
 
 ## Ramas del módulo
