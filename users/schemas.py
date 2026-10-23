@@ -22,3 +22,13 @@ class User(UserBase):
 
     id: int
     created_at: datetime
+
+
+class UserPage(BaseModel):
+    """Página de resultados del listado de usuarios."""
+
+    items: list[User]
+    total: int = Field(ge=0, description="Total de usuarios que cumplen el filtro")
+    page: int = Field(ge=1)
+    size: int = Field(ge=1)
+    pages: int = Field(ge=0, description="Total de páginas (0 si no hay resultados)")

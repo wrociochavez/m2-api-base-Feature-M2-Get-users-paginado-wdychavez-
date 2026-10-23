@@ -6,7 +6,7 @@ dominio (usando `core.errors`).
 """
 from core import errors
 from users import repository
-from users.schemas import User, UserCreate
+from users.schemas import User, UserCreate, UserPage
 
 
 def get_user(user_id: int) -> User:
@@ -16,8 +16,27 @@ def get_user(user_id: int) -> User:
     return user
 
 
-def list_users() -> list[User]:
-    return repository.list_all()
+def list_users(
+    q: str | None = None,
+    page: int = 1,
+    size: int = 10,
+    sort: str = "id",
+) -> UserPage:
+    """Lista usuarios con búsqueda, orden y paginación.
+
+    Args:
+        q: texto a buscar (sin distinguir mayúsculas) en `name` o `email`.
+        page: número de página, empezando en 1.
+        size: usuarios por página.
+        sort: campo de orden; prefijo `-` para descendente.
+
+    Returns:
+        La página pedida con el total de coincidencias.
+
+    Raises:
+        HTTPException: 422 si `sort` no es un campo permitido.
+    """
+    raise NotImplementedError
 
 
 def create_user(data: UserCreate) -> User:
