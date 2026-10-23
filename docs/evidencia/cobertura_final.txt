@@ -1,0 +1,16 @@
+=============================== tests coverage ================================
+______________ coverage: platform win32, python 3.12.10-final-0 _______________
+
+Name                  Stmts   Miss Branch BrPart  Cover   Missing
+-----------------------------------------------------------------
+core\__init__.py          0      0      0      0   100%
+core\errors.py            7      0      0      0   100%
+main.py                   7      0      0      0   100%
+users\__init__.py         0      0      0      0   100%
+users\repository.py      23      0      2      0   100%
+users\routes.py          13      0      0      0   100%
+users\schemas.py         15      0      0      0   100%
+users\service.py         34      0      8      0   100%
+-----------------------------------------------------------------
+TOTAL                    99      0     10      0   100%
+43 passed in 0.79s

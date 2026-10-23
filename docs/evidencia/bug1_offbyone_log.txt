@@ -1,0 +1,17 @@
+F
+================================== FAILURES ===================================
+______________________ test_list_users_devuelve_los_seed ______________________
+client = <starlette.testclient.TestClient object at 0x0000020E362FE5D0>
+    def test_list_users_devuelve_los_seed(client: TestClient) -> None:
+        response = client.get("/users")
+    
+        assert response.status_code == 200
+        assert response.json()["total"] == 4
+>       assert len(response.json()["items"]) == 4
+E       assert 0 == 4
+E        +  where 0 = len([])
+tests\test_users.py:16: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_users.py::test_list_users_devuelve_los_seed - assert 0 == 4
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 1.83s

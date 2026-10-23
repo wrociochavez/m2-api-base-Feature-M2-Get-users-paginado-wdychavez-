@@ -1,0 +1,18 @@
+MUERTO  búsqueda: `or` -> `and`
+MUERTO  búsqueda: no buscar en nombre
+MUERTO  búsqueda: no recortar espacios
+MUERTO  búsqueda: no ignorar mayúsculas
+MUERTO  búsqueda: q vacío ya no devuelve todo
+MUERTO  orden: invertir dirección
+MUERTO  orden: no quitar el prefijo '-'
+MUERTO  orden: campo inválido aceptado
+MUERTO  orden: quitar campo email
+MUERTO  orden: sin desempate por id
+MUERTO  orden: distinguir mayúsculas
+MUERTO  paginación: off-by-one en offset
+MUERTO  paginación: página de size+1
+MUERTO  paginación: pages sin redondeo hacia arriba
+MUERTO  paginación: total tras recortar
+
+Mutantes: 15  muertos: 15  vivos: 0
+Mutation score: 100%

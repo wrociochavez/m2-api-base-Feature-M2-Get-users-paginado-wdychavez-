@@ -219,3 +219,17 @@ def test_service_list_users_usa_el_repositorio_y_calcula_paginas(monkeypatch) ->
 
     assert (page.total, page.pages) == (7, 3)
     assert [u.id for u in page.items] == [7]
+
+
+def test_service_orden_desempata_por_id_cuando_el_campo_es_igual(monkeypatch) -> None:
+    ahora = datetime.now(timezone.utc)
+    iguales = [
+        User(id=i, name="Mismo Nombre", email=f"m{i}@x.com", created_at=ahora) for i in (1, 2, 3)
+    ]
+    monkeypatch.setattr(repository, "list_all", lambda: iguales)
+
+    ascendente = service.list_users(sort="name")
+    descendente = service.list_users(sort="-name")
+
+    assert [u.id for u in ascendente.items] == [1, 2, 3]
+    assert [u.id for u in descendente.items] == [3, 2, 1]
