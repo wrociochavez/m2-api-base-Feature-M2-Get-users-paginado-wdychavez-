@@ -16,6 +16,11 @@ def get_user(user_id: int) -> User:
     return user
 
 
+def _sort_value(user: User, field: str) -> object:
+    value = getattr(user, field)
+    return value.lower() if isinstance(value, str) else value
+
+
 def list_users(
     q: str | None = None,
     page: int = 1,
@@ -36,7 +41,24 @@ def list_users(
     Raises:
         HTTPException: 422 si `sort` no es un campo permitido.
     """
-    raise NotImplementedError
+    users = repository.list_all()
+
+    term = (q or "").strip().lower()
+    if term:
+        users = [u for u in users if term in u.name.lower() or term in u.email.lower()]
+
+    descending = sort.startswith("-")
+    field = sort[1:] if descending else sort
+    if field not in ("id", "name", "email", "created_at"):
+        raise errors.invalid_request(f"campo de orden no válido: {sort}")
+    users = sorted(users, key=lambda u: (_sort_value(u, field), u.id), reverse=descending)
+
+    total = len(users)
+    pages = -(-total // size)
+    start = (page - 1) * size
+    return UserPage(
+        items=users[start : start + size], total=total, page=page, size=size, pages=pages
+    )
 
 
 def create_user(data: UserCreate) -> User:
