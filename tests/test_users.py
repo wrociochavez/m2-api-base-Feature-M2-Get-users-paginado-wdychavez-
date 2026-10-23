@@ -12,7 +12,8 @@ def test_list_users_devuelve_los_seed(client: TestClient) -> None:
     response = client.get("/users")
 
     assert response.status_code == 200
-    assert len(response.json()) == 4
+    assert response.json()["total"] == 4
+    assert len(response.json()["items"]) == 4
 
 
 def test_get_user_existente_devuelve_200(client: TestClient) -> None:
