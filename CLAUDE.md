@@ -26,6 +26,34 @@ el proyecto corre sin infraestructura.
 - Rutas específicas antes que rutas con parámetro: `/users/search` debe declararse
   **antes** de `/users/{user_id}`.
 
+## Listados (paginación, búsqueda y orden)
+
+- Los listados aceptan `q`, `page` (≥1), `size` (1–100) y `sort` (`campo` o `-campo`).
+- Devuelven una página `{items, total, page, size, pages}` (`UserPage`), nunca una lista cruda.
+- `page`/`size` se validan en la ruta con `Query(...)` (422 automático); un `sort` con
+  campo no permitido lo rechaza `service.py` con `errors.invalid_request`.
+- El orden siempre desempata por `id` para que la paginación sea estable.
+
+## Documentación y bitácora (obligatorio en cada feature)
+
+Toda feature debe dejar, además del código y los tests:
+
+1. **Docstrings** (en español, estilo Args/Returns/Raises) en funciones públicas de
+   `service.py` y en los helpers no triviales.
+2. **README.md** actualizado: endpoints nuevos con ejemplos `curl`, parámetros,
+   cómo correr tests/cobertura/mutation testing y enlaces a la bitácora y al changelog.
+3. **CHANGELOG.md** (formato Keep a Changelog): fecha, versión y resumen de cambios,
+   marcando los cambios incompatibles (*breaking*).
+4. **BITACORA.md**: el agente debe **generar y mantener una bitácora** del proceso —
+   una fila por iteración con fase, prompt resumido, resultado y decisión
+   (aceptado/rechazado y por qué). Incluye los bugs: stack trace, hipótesis propuestas
+   (se pide hipótesis *antes* del fix), hipótesis elegida, fix y validación.
+5. **docs/REFLEXION.md**: reflexión final (qué funcionó, qué no, qué mejorar, límites
+   de la IA) con evidencia: logs de `pytest`, cobertura y mutation testing.
+
+Flujo de trabajo: skeleton-first (firmas sin implementación) → tests en rojo →
+implementación incremental → refactor con tests en verde. Commits pequeños por fase.
+
 ## Cómo ejecutar
 
 ```bash
@@ -35,8 +63,9 @@ pip install -r requirements.txt
 
 uvicorn main:app --reload          # API en http://127.0.0.1:8000  ·  /docs para el Swagger
 pytest                             # tests
-pytest --cov=. --cov-report=term-missing   # cobertura
+pytest --cov=. --cov-branch --cov-report=term-missing   # cobertura (líneas + ramas)
 ruff check .                       # linter
+mutmut run                         # mutation testing (ver README)
 ```
 
 ## Fuera de límites
