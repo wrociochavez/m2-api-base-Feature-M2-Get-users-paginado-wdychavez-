@@ -30,17 +30,58 @@ Endpoints actuales:
 | Método | Ruta              | Descripción                     |
 |--------|-------------------|---------------------------------|
 | GET    | `/health`         | Estado del servicio             |
-| GET    | `/users`          | Lista de usuarios               |
+| GET    | `/users`          | Lista paginada con búsqueda y orden (ver abajo) |
 | GET    | `/users/{id}`     | Un usuario por id (404 si no existe) |
 | POST   | `/users`          | Crea un usuario (409 si el email ya existe) |
+
+### Listado de usuarios: `GET /users?q=&page=&size=&sort=`
+
+| Parámetro | Default | Regla |
+|-----------|---------|-------|
+| `q`       | —       | Texto a buscar (sin distinguir mayúsculas) en `name` o `email`. Vacío = sin filtro. |
+| `page`    | `1`     | Entero ≥ 1. |
+| `size`    | `10`    | Entero entre 1 y 100. |
+| `sort`    | `id`    | `id`, `name`, `email` o `created_at`; prefijo `-` para descendente. Desempata por `id`. |
+
+Errores: **422** si `page`/`size` están fuera de rango o `sort` tiene un campo no permitido.
+Una página más allá del final responde **200** con `items: []`.
+
+```bash
+curl "http://127.0.0.1:8000/users?q=example.com&sort=-name&page=1&size=2"
+```
+
+```json
+{
+  "items": [
+    {"id": 4, "name": "Katherine Johnson", "email": "katherine@example.com", "created_at": "..."},
+    {"id": 3, "name": "Grace Hopper", "email": "grace@example.com", "created_at": "..."}
+  ],
+  "total": 4, "page": 1, "size": 2, "pages": 2
+}
+```
+
+> **Cambio incompatible (v0.2.0):** `GET /users` ya no devuelve una lista cruda sino la
+> página `{items, total, page, size, pages}`. Ver [CHANGELOG.md](CHANGELOG.md).
 
 ## Tests y calidad
 
 ```bash
-pytest                                       # correr la suite
-pytest --cov=. --cov-report=term-missing     # con cobertura
-ruff check .                                 # linter
+pytest                                                  # correr la suite (43 tests)
+pytest --cov=. --cov-branch --cov-report=term-missing   # cobertura de líneas y ramas
+ruff check .                                            # linter
+python scripts/mutation_check.py                        # mutation testing manual sobre users/service.py
 ```
+
+Resultados actuales: **43 tests en verde, 100% de cobertura (líneas y ramas) y 15/15
+mutantes muertos**. `mutmut` no corre en Windows nativo, por eso el script aplica
+mutaciones a mano (una por vez), corre la suite y restaura el archivo.
+
+## Proceso y documentación
+
+- [BITACORA.md](BITACORA.md) — prompts, decisiones, bug inducido con hipótesis y refactor.
+- [CHANGELOG.md](CHANGELOG.md) — cambios por versión.
+- [docs/REFLEXION.md](docs/REFLEXION.md) — reflexión final y evidencia.
+- [docs/evidencia/](docs/evidencia/) — logs de cobertura, bug y mutación.
 
 ## Ramas del módulo
 
