@@ -16,19 +16,18 @@
 
 - `mutmut` no soporta Windows nativo: hubo que escribir un script propio con solo 15 mutantes,
   menos exhaustivo que una herramienta real.
-- El bug de debugging fue **inducido por mí**, no un fallo real, así que la parte de "confirmar
+- El bug de debugging fue **inducido**, no un fallo real, así que la parte de "confirmar
   la causa" es menos exigente que en un caso real. Tampoco se hizo el caso de prueba erróneo.
 - La "evidencia de prompts" es un resumen de las peticiones, no una transcripción literal.
-- Algunos supuestos del diseño los tomé yo (por ejemplo, orden descendente con desempate por
+- Algunos supuestos del diseño (por ejemplo, orden descendente con desempate por
   `id` descendente); están documentados pero no los validó un usuario final.
 
 ## Qué mejoraría
 
-1. Ejecutar `mutmut` en WSL o CI Linux y subir el reporte.
-2. Añadir un test de caracterización antes de cambiar la forma de respuesta de `GET /users`
+1. Añadir un test de caracterización antes de cambiar la forma de respuesta de `GET /users`
    (el cambio es incompatible; convendría versionar la ruta o avisar a los consumidores).
-3. Paginar en el repositorio en vez de en memoria cuando exista una base de datos real.
-4. Añadir un check de review automático (Clase 4) sobre el PR.
+2. Paginar en el repositorio en vez de en memoria cuando exista una base de datos real.
+3. Añadir un check de review automático (Clase 4) sobre el PR.
 
 ## Aprendizajes sobre el uso de IA
 

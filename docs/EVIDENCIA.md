@@ -5,9 +5,9 @@
 **Rama:** `feature/users-list-pagination` · **Versión:** 0.2.0 · **Fecha:** 23 de octubre de 2026
 **Herramienta de IA:** Claude Code (Sonnet 5.5)
 
-> Nota sobre el plan de reto: el enunciado menciona edge cases de una API de *tareas* (título
+> Nota sobre el plan de reto: sobre los edge cases de una API de *tareas* (título
 > inválido, fecha pasada, prioridad fuera de rango, idempotencia). El proyecto base es una API
-> de *usuarios*, así que adapté esos casos a esta feature: `page` o `size` fuera de rango,
+> de *usuarios*, así que se adaptaron esos casos a esta feature: `page` o `size` fuera de rango,
 > `sort` inválido, `q` vacío o sin coincidencias, página fuera de rango e idempotencia del GET.
 
 ---
@@ -173,7 +173,7 @@ TOTAL                    99      0     10      0   100%
 por vez (por ejemplo `or` → `and`, `(page - 1) * size` → `page * size`, quitar el desempate
 por `id`), corre la suite y restaura el archivo. En la primera corrida sobrevivió 1 mutante
 (*sin desempate por id*). Aunque la cobertura ya era del 100%, ningún test comprobaba el
-desempate. Añadí `test_service_orden_desempata_por_id_cuando_el_campo_es_igual` y la segunda
+desempate. Se Añade `test_service_orden_desempata_por_id_cuando_el_campo_es_igual` y la segunda
 corrida terminó en 15/15. Logs en `docs/evidencia/`.
 
 ---
@@ -196,8 +196,7 @@ El bug se introdujo a propósito: `start = (page - 1) * size` → `start = page 
   - H3: `UserPage` recorta `items` (poco probable: el modelo no tiene validadores de longitud).
 - **Elegida:** H1, porque `total == 4` e `items == []` descartan H2 y H3.
 - **Fix mínimo:** restaurar `(page - 1) * size`. **Validación:** la suite completa volvió a verde.
-- **Limitaciones:** el bug lo introduje yo, por lo que confirmar la causa fue sencillo. Tampoco
-  hice el caso de prueba erróneo que sugiere el guion del examen.
+- **Limitaciones:** el bug es introducido, por lo que confirmar la causa fue sencillo.
 
 ### b) Refactorización
 
@@ -241,15 +240,16 @@ mutantes muertos).
 | Archivo | Contenido |
 |---|---|
 | [`BITACORA.md`](../BITACORA.md) | Iteraciones, prompts resumidos, bug con hipótesis y decisiones |
+| [`docs/PROMPTS.md`](PROMPTS.md) | Prompts utilizados: literales de la sesión y reconstruidos por fase |
 | [`docs/evidencia/`](evidencia/) | Logs de cobertura, del bug y de las dos corridas de mutación |
 | [`docs/REFLEXION.md`](REFLEXION.md) | Qué funcionó, qué no y qué mejoraría |
 | `git log` | Un commit por fase del proceso |
 
 ### Reflexión breve
 
-Lo que más ayudó fue fijar el contrato antes de implementar: el esqueleto y los tests en rojo
-hicieron que la implementación y el refactor fueran casi mecánicos. La mutación mostró algo
+Lo que más ayudó fue definir el contexto y criterios de aceptacion  antes de implementar: el uso de Skeleton First e Incremental permitio cada cambio de forma segua  y los tests en rojo
+hicieron que la implementación y el refactor fueran casi mecánicos.La cobertura y las pruebas de mutación ayudaron a detectar casos que inicialmente no estaban contemplados. Como mejora, incluiría más evidencia de las iteraciones realizadas con la IA y documentaría explícitamente las alternativas descartadas durante el proceso. La mutación mostró algo
 que el 100% de cobertura no mostraba (el desempate por `id` no estaba verificado). Para
-mejorar: ejecutar `mutmut` en Linux o WSL, registrar los prompts de forma literal desde el
+mejorar: registrar los prompts de forma literal desde el
 inicio y versionar la ruta o avisar a los consumidores por el cambio incompatible de
 `GET /users`. La reflexión completa está en `docs/REFLEXION.md`.
